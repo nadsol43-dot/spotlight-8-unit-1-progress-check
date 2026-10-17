@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1 Progress Check — Interactive Worksheet (Page 24)</title>
+  <style>
+    :root {
+      --page-bg: #f6f7e4;
+      --page-bg-grad: linear-gradient(135deg, #f1f5d8 0%, #f7f8e8 50%, #eef3d0 100%);
+      --teal-main: #2e8b7d;
+      --teal-light: #7ab8ad;
+      --teal-pale: #dceee9;
+      --red-badge: #d93843;
+      --text-dark: #1f2421;
+      --text-muted: #525b56;
+      --input-bg: #ffffff;
+      --input-border: #89b0a6;
+      --input-focus: #2e8b7d;
+      --correct-bg: #e3f7ec;
+      --correct-border: #208b52;
+      --correct-text: #135c35;
+      --wrong-bg: #fde8e9;
+      --wrong-border: #d93843;
+      --wrong-text: #9e1c25;
+      --shadow-soft: 0 10px 32px rgba(34, 60, 53, 0.12);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: #dfe5d5;
+      color: var(--text-dark);
+      line-height: 1.5;
+      padding: 20px 12px 48px;
+    }
+
+    /* Sticky Control Bar */
+    .control-bar {
+      max-width: 1060px;
+      margin: 0 auto 18px;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 12px 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      border: 1px solid rgba(46, 139, 125, 0.25);
+    }
+
+    .control-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .progress-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f0f7f5;
+      border: 1px solid #c3dfd9;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1f5c52;
+    }
+
+    .progress-bar-mini {
+      width: 90px;
+      height: 8px;
+      background: #d5e8e4;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--teal-main);
+      transition: width 0.3s ease;
+    }
+
+    .live-score-pill {
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #fff4e5;
+      border: 1px solid #f5cf9b;
+      color: #8c4d00;
+      display: none;
+    }
+
+    .live-score-pill.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .control-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 15px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--teal-main);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(46, 139, 125, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #236f63;
+    }
+
+    .btn-secondary {
+      background: #eaf3f1;
+      color: #1f5c52;
+      border: 1px solid #b8dad3;
+    }
+
+    .btn-secondary:hover {
+      background: #d9ece8;
+    }
+
+    .btn-warning {
+      background: #fff3e0;
+      color: #995400;
+      border: 1px solid #f2cb96;
+    }
+
+    .btn-warning:hover {
+      background: #ffe6c2;
+    }
+
+    .btn-danger {
+      background: #fdf0f1;
+      color: #a8232c;
+      border: 1px solid #f1bfc3;
+    }
+
+    .btn-danger:hover {
+      background: #fbe0e2;
+    }
+
+    /* Main Textbook Page Container */
+    .book-page {
+      max-width: 1060px;
+      margin: 0 auto;
+      background: var(--page-bg-grad);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      padding: 0 36px 42px;
+      border: 1px solid #d4dcb8;
+    }
+
+    /* Authentic Top-Left Curved Graphic Banner */
+    .header-banner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 26px 0 24px;
+      margin-bottom: 12px;
+    }
+
+    .header-arcs {
+      position: absolute;
+      top: -40px;
+      left: -50px;
+      width: 560px;
+      height: 175px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+    }
+
+    .header-num {
+      font-size: 4.6rem;
+      font-weight: 800;
+      color: #7ab8ad;
+      line-height: 0.9;
+      font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+      text-shadow: 1px 2px 0px #ffffff;
+      user-select: none;
+    }
+
+    .header-title {
+      font-size: 2.35rem;
+      font-weight: 800;
+      color: var(--teal-main);
+      letter-spacing: -0.5px;
+      text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Two-column layout matching Page 24 */
+    .page-columns {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 38px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 860px) {
+      .page-columns {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .book-page {
+        padding: 0 18px 32px;
+      }
+    }
+
+    /* Exercise Block Styling */
+    .exercise-block {
+      margin-bottom: 28px;
+      background: rgba(255, 255, 255, 0.42);
+      border: 1px solid rgba(46, 139, 125, 0.16);
+      border-radius: var(--radius-md);
+      padding: 18px 20px 16px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .exercise-block:hover {
+      box-shadow: 0 4px 14px rgba(46, 139, 125, 0.08);
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .ex-number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #54a395;
+      line-height: 0.95;
+      min-width: 26px;
+      user-select: none;
+    }
+
+    .ex-instruction {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.38;
+      flex: 1;
+    }
+
+    .ex-instruction em {
+      font-style: italic;
+      font-weight: 600;
+      color: #1c5248;
+    }
+
+    /* Word Bank for Exercise 1 */
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 10px 0 16px;
+      padding: 10px 12px;
+      background: rgba(220, 238, 233, 0.65);
+      border-radius: var(--radius-sm);
+      border: 1px dashed #7ab8ad;
+    }
+
+    .word-bank-label {
+      width: 100%;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #28695e;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .word-chip {
+      background: #ffffff;
+      border: 1.5px solid #68a89c;
+      color: #1b4f46;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-style: italic;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .word-chip:hover {
+      background: var(--teal-main);
+      color: #ffffff;
+      border-color: var(--teal-main);
+      transform: translateY(-1px);
+    }
+
+    .word-chip.used {
+      opacity: 0.42;
+      text-decoration: line-through;
+      background: #e9efec;
+      border-color: #b0c4bf;
+      color: #6b7d78;
+    }
+
+    /* Question List */
+    .question-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .question-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 0.97rem;
+      line-height: 1.65;
+    }
+
+    .q-num {
+      font-weight: 700;
+      min-width: 22px;
+      text-align: right;
+      color: #2b3532;
+      user-select: none;
+    }
+
+    .q-body {
+      flex: 1;
+    }
+
+    /* Inline Blank Inputs */
+    .blank-wrap {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      vertical-align: baseline;
+      margin: 0 2px;
+    }
+
+    .blank-input {
+      font-family: inherit;
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: #16423b;
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      border-bottom-width: 2.5px;
+      border-radius: 5px;
+      padding: 2px 8px;
+      min-width: 120px;
+      transition: all 0.15s ease;
+      outline: none;
+    }
+
+    .blank-input.short {
+      min-width: 92px;
+    }
+
+    .blank-input.wide {
+      min-width: 155px;
+    }
+
+    .blank-input:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(46, 139, 125, 0.2);
+      background: #ffffff;
+    }
+
+    .blank-input.active-target {
+      border-color: #d97706;
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+    }
+
+    .blank-input.correct {
+      background: var(--correct-bg);
+      border-color: var(--correct-border);
+      color: var(--correct-text);
+    }
+
+    .blank-input.wrong {
+      background: var(--wrong-bg);
+      border-color: var(--wrong-border);
+      color: var(--wrong-text);
+    }
+
+    .status-icon {
+      display: none;
+      margin-left: 5px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .status-icon.correct {
+      display: inline;
+      color: var(--correct-border);
+    }
+
+    .status-icon.wrong {
+      display: inline;
+      color: var(--wrong-border);
+    }
+
+    .correction-badge {
+      display: none;
+      margin-left: 6px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      background: #e3f7ec;
+      color: #135c35;
+      border: 1px solid #95d5b2;
+      padding: 1px 7px;
+      border-radius: 4px;
+    }
+
+    .correction-badge.visible {
+      display: inline-block;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 4px;
+      font-size: 0.83rem;
+      color: #2d5a52;
+      background: rgba(220, 238, 233, 0.7);
+      border-left: 3px solid var(--teal-main);
+      padding: 4px 9px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .explanation-box.visible {
+      display: block;
+    }
+
+    .bold-prompt {
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 0.2px;
+    }
+
+    .verb-prompt {
+      font-weight: 800;
+      color: #111;
+    }
+
+    /* Exercise 6: Matching Exchanges */
+    .matching-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+      align-items: start;
+    }
+
+    @media (max-width: 520px) {
+      .matching-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .match-left-list,
+    .match-right-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .match-left-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.95rem;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .match-left-item.selected-source {
+      border-color: var(--teal-main);
+      background: #e6f4f1;
+    }
+
+    .match-box-group {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid #444;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .match-num-cell {
+      width: 24px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-right: 1.5px solid #444;
+      background: #f5f5f0;
+      cursor: pointer;
+    }
+
+    .match-select {
+      width: 34px;
+      height: 26px;
+      border: none;
+      background: #ffffff;
+      font-weight: 800;
+      font-size: 0.92rem;
+      text-align: center;
+      color: #16423b;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+    }
+
+    .match-select.correct {
+      background: var(--correct-bg);
+      color: var(--correct-text);
+    }
+
+    .match-select.wrong {
+      background: var(--wrong-bg);
+      color: var(--wrong-text);
+    }
+
+    .match-right-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(46, 139, 125, 0.2);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .match-right-item:hover {
+      background: #e6f4f1;
+      border-color: var(--teal-main);
+    }
+
+    .match-right-item.used-target {
+      background: #edf5f3;
+      border-color: #9bc5bc;
+    }
+
+    .match-letter {
+      font-weight: 800;
+      color: #111;
+      min-width: 16px;
+    }
+
+    /* Exercise Footer & Textbook Points Bracket */
+    .exercise-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(46, 139, 125, 0.25);
+    }
+
+    .btn-check-section {
+      background: transparent;
+      border: 1px solid #68a89c;
+      color: #1f5c52;
+      padding: 4px 11px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-check-section:hover {
+      background: var(--teal-main);
+      color: #fff;
+      border-color: var(--teal-main);
+    }
+
+    .points-bracket {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #222;
+      position: relative;
+      padding: 3px 12px;
+      user-select: none;
+    }
+
+    .points-bracket::before,
+    .points-bracket::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      border: 1.5px solid #333;
+    }
+
+    .points-bracket::before {
+      left: 0;
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+    }
+
+    .points-bracket::after {
+      right: 0;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .points-grid {
+      display: grid;
+      grid-template-columns: auto auto;
+      column-gap: 10px;
+      row-gap: 0px;
+      align-items: center;
+      line-height: 1.15;
+    }
+
+    .points-score-top {
+      border-bottom: 1.5px solid #222;
+      text-align: center;
+      min-width: 28px;
+      font-weight: 800;
+      color: var(--teal-main);
+      min-height: 17px;
+    }
+
+    .points-score-bottom {
+      text-align: center;
+    }
+
+    /* Total Score Box */
+    .my-score-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin: 14px 0 22px;
+    }
+
+    .my-score-bracket {
+      font-size: 1.05rem;
+      padding: 6px 18px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    /* "Now I Can ... in English" Section */
+    .now-i-can-card {
+      position: relative;
+      padding: 18px 20px 20px 24px;
+      border-left: 2px dotted var(--red-badge);
+      border-bottom: 2px dotted var(--red-badge);
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+
+    .now-i-can-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .red-circle-now {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--red-badge);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 3px 8px rgba(217, 56, 67, 0.3);
+      flex-shrink: 0;
+    }
+
+    .i-can-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--red-badge);
+    }
+
+    .can-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .can-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.93rem;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .can-item:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .can-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--teal-main);
+      border-radius: 4px;
+      margin-top: 2px;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .can-checkbox:checked {
+      background: var(--teal-main);
+    }
+
+    .can-checkbox:checked::before {
+      content: "✓";
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .can-item.checked span {
+      color: #1b5c50;
+      font-weight: 600;
+    }
+
+    .in-english-footer {
+      text-align: right;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--red-badge);
+    }
+
+    /* Page Number Footer */
+    .page-number-footer {
+      margin-top: 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #2b3532;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Interactive Toolbar -->
+  <div class="control-bar" role="region" aria-label="Worksheet controls">
+    <div class="control-bar-left">
+      <div class="progress-pill">
+        <span>Completed: <strong id="completed-count">0</strong> / 35</span>
+        <div class="progress-bar-mini" aria-hidden="true">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+      </div>
+      <div class="live-score-pill" id="live-score-pill">
+        <span>Total Score:</span>
+        <span id="top-total-score">0 / 100</span>
+      </div>
+    </div>
+
+    <div class="control-buttons">
+      <button type="button" class="btn btn-primary" id="btn-check-all">
+        ✓ Check All Answers
+      </button>
+      <button type="button" class="btn btn-secondary" id="btn-toggle-explanations">
+        💡 Explanations
+      </button>
+      <button type="button" class="btn btn-warning" id="btn-show-answers">
+        👁 Show Answers
+      </button>
+      <button type="button" class="btn btn-danger" id="btn-reset-all">
+        ↺ Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Textbook Page -->
+  <main class="book-page">
+    <!-- Top Curved Header Banner -->
+    <header class="header-banner">
+      <svg class="header-arcs" viewBox="0 0 560 175" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="140" cy="40" rx="220" ry="110" fill="#ffffff" fill-opacity="0.88" />
+        <ellipse cx="145" cy="42" rx="225" ry="112" stroke="#4f9d90" stroke-width="2" />
+        <ellipse cx="170" cy="36" rx="265" ry="125" stroke="#8dc4ba" stroke-width="1.5" />
+      </svg>
+      <div class="header-content">
+        <span class="header-num">1</span>
+        <h1 class="header-title">Progress Check</h1>
+      </div>
+    </header>
+
+    <div class="page-columns">
+      <!-- LEFT COLUMN: Exercises 1, 2, 3 -->
+      <div class="col-left">
+
+        <!-- EXERCISE 1 -->
+        <section class="exercise-block" id="ex-block-1">
+          <div class="exercise-header">
+            <span class="ex-number">1</span>
+            <p class="ex-instruction">
+              Fill in: <em>selfish, sociable, pessimistic, shrugged, clenched, patient, reliable, stubborn, shy, insincere.</em>
+            </p>
+          </div>
+
+          <div class="word-bank" id="ex1-word-bank" aria-label="Word bank — click a word to fill the active blank">
+            <span class="word-bank-label">Word Bank (click a word or type below):</span>
+            <button type="button" class="word-chip" data-word="selfish">selfish</button>
+            <button type="button" class="word-chip" data-word="sociable">sociable</button>
+            <button type="button" class="word-chip" data-word="pessimistic">pessimistic</button>
+            <button type="button" class="word-chip" data-word="shrugged">shrugged</button>
+            <button type="button" class="word-chip" data-word="clenched">clenched</button>
+            <button type="button" class="word-chip" data-word="patient">patient</button>
+            <button type="button" class="word-chip" data-word="reliable">reliable</button>
+            <button type="button" class="word-chip" data-word="stubborn">stubborn</button>
+            <button type="button" class="word-chip" data-word="shy">shy</button>
+            <button type="button" class="word-chip" data-word="insincere">insincere</button>
+          </div>
+
+          <ol class="question-list" id="ex1-list"></ol>
+
+          <div class="exercise-footer">
+            <button type="button" class="btn-check-section" data-check-ex="1">Check Exercise 1</button>
+            <div class="points-bracket" aria-label="Points for Exercise 1">
+              <div class="points-grid">
+                <span>Points:</span>
+                <span class="points-score-top" id="score-ex-1"></span>
+                <span>10X2</span>
+                <span class="points-score-bottom">20</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXERCISE 2 -->
+        <section class="exercise-block" id="ex-block-2">
+          <div class="exercise-header">
+            <span class="ex-number">2</span>
+            <p class="ex-instruction">
+              Complete the sentences with words derived from the words in bold.
+            </p>
+          </div>
+
+          <ol class="question-list" id="ex2-list"></ol>
+
+          <div class="exercise-footer">
+            <button type="button" class="btn-check-section" data-check-ex="2">Check Exercise 2</button>
+            <div class="points-bracket" aria-label="Points for Exercise 2">
+              <div class="points-grid">
+                <span>Points:</span>
+                <span class="points-score-top" id="score-ex-2"></span>
+                <span>5X4</span>
+                <span class="points-score-bottom">20</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXERCISE 3 -->
+        <section class="exercise-block" id="ex-block-3">
+          <div class="exercise-header">
+            <span class="ex-number">3</span>
+            <p class="ex-instruction">
+              Fill in the gaps with the correct form of the verbs in brackets.
+            </p>
+          </div>
+
+          <ol class="question-list" id="ex3-list"></ol>
+
+          <div class="exercise-footer">
+            <button type="button" class="btn-check-section" data-check-ex="3">Check Exercise 3</button>
+            <div class="points-bracket" aria-label="Points for Exercise 3">
+              <div class="points-grid">
+                <span>Points:</span>
+                <span class="points-score-top" id="score-ex-3"></span>
+                <span>10X2</span>
+                <span class="points-score-bottom">20</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Exercises 4, 5, 6 & Now I Can -->
+      <div class="col-right">
+
+        <!-- EXERCISE 4 -->
+        <section class="exercise-block" id="ex-block-4">
+          <div class="exercise-header">
+            <span class="ex-number">4</span>
+            <p class="ex-instruction">
+              Complete the phrasal verbs with the correct preposition.
+            </p>
+          </div>
+
+          <ol class="question-list" id="ex4-list"></ol>
+
+          <div class="exercise-footer">
+            <button type="button" class="btn-check-section" data-check-ex="4">Check Exercise 4</button>
+            <div class="points-bracket" aria-label="Points for Exercise 4">
+              <div class="points-grid">
+                <span>Points:</span>
+                <span class="points-score-top" id="score-ex-4"></span>
+                <span>5X2</span>
+                <span class="points-score-bottom">10</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXERCISE 5 -->
+        <section class="exercise-block" id="ex-block-5">
+          <div class="exercise-header">
+            <span class="ex-number">5</span>
+            <p class="ex-instruction">
+              Fill in the gaps with the correct preposition.
+            </p>
+          </div>
+
+          <ol class="question-list" id="ex5-list"></ol>
+
+          <div class="exercise-footer">
+            <button type="button" class="btn-check-section" data-check-ex="5">Check Exercise 5</button>
+            <div class="points-bracket" aria-label="Points for Exercise 5">
+              <div class="points-grid">
+                <span>Points:</span>
+                <span class="points-score-top" id="score-ex-5"></span>
+                <span>5X2</span>
+                <span class="points-score-bottom">10</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXERCISE 6 -->
+        <section class="exercise-block" id="ex-block-6">
+          <div class="exercise-header">
+            <span class="ex-number">6</span>
+            <p class="ex-instruction">
+              Match to form exchanges.
+            </p>
+          </div>
+
+          <p style="font-size: 0.82rem; color: #3c6e64; margin-bottom: 8px; font-weight: 600;">
+            Tip: Choose a letter (a–e) from each dropdown, or click a numbered item on the left and then its matching reply on the right.
+          </p>
+
+          <div class="matching-container">
+            <ul class="match-left-list" id="ex6-left-list"></ul>
+            <ul class="match-right-list" id="ex6-right-list"></ul>
+          </div>
+
+          <div class="exercise-footer">
+            <button type="button" class="btn-check-section" data-check-ex="6">Check Exercise 6</button>
+            <div class="points-bracket" aria-label="Points for Exercise 6">
+              <div class="points-grid">
+                <span>Points:</span>
+                <span class="points-score-top" id="score-ex-6"></span>
+                <span>5X4</span>
+                <span class="points-score-bottom">20</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TOTAL SCORE BRACKET -->
+        <div class="my-score-wrap">
+          <div class="points-bracket my-score-bracket" aria-label="Total Score out of 100">
+            <div class="points-grid">
+              <span>My score:</span>
+              <span class="points-score-top" id="score-total"></span>
+              <span></span>
+              <span class="points-score-bottom">100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOW I CAN SECTION -->
+        <aside class="now-i-can-card" aria-label="Now I Can self-assessment checklist">
+          <div class="now-i-can-header">
+            <div class="red-circle-now">Now</div>
+            <div class="i-can-title">I Can ...</div>
+          </div>
+
+          <ul class="can-list">
+            <li>
+              <label class="can-item">
+                <input type="checkbox" class="can-checkbox" />
+                <span>talk and write about family members and relationships</span>
+              </label>
+            </li>
+            <li>
+              <label class="can-item">
+                <input type="checkbox" class="can-checkbox" />
+                <span>talk and write about conflict and disagreement</span>
+              </label>
+            </li>
+            <li>
+              <label class="can-item">
+                <input type="checkbox" class="can-checkbox" />
+                <span>describe and compare people</span>
+              </label>
+            </li>
+            <li>
+              <label class="can-item">
+                <input type="checkbox" class="can-checkbox" />
+                <span>write a poem based on opposites</span>
+              </label>
+            </li>
+            <li>
+              <label class="can-item">
+                <input type="checkbox" class="can-checkbox" />
+                <span>write a greetings card</span>
+              </label>
+            </li>
+            <li>
+              <label class="can-item">
+                <input type="checkbox" class="can-checkbox" />
+                <span>write a short article about socialising in my country</span>
+              </label>
+            </li>
+          </ul>
+
+          <div class="in-english-footer">... in English</div>
+        </aside>
+
+      </div>
+    </div>
+
+    <div class="page-number-footer">24</div>
+  </main>
+
+  <script>
+    // =========================================================================
+    // WORKSHEET DATA (Exact content & grading rules for Page 24 Progress Check 1)
+    // =========================================================================
+    const WORKSHEET_DATA = {
+      ex1: {
+        pointsEach: 2,
+        items: [
+          {
+            num: 1,
+            before: "He was so angry he ",
+            after: " his fists tightly.",
+            answers: ["clenched"],
+            displayAnswer: "clenched",
+            explanation: "'Clench one's fists' means to close your hands tightly, often in anger."
+          },
+          {
+            num: 2,
+            before: "Rachel has many friends because she's very ",
+            after: " .",
+            answers: ["sociable"],
+            displayAnswer: "sociable",
+            explanation: "'Sociable' people enjoy being with others and make friends easily."
+          },
+          {
+            num: 3,
+            before: "",
+            after: " people always see the negative side of things.",
+            answers: ["pessimistic"],
+            displayAnswer: "Pessimistic",
+            explanation: "'Pessimistic' people expect bad things to happen and focus on the negative."
+          },
+          {
+            num: 4,
+            before: "Penny doesn't get angry easily. She's very ",
+            after: " .",
+            answers: ["patient"],
+            displayAnswer: "patient",
+            explanation: "'Patient' people stay calm and do not get annoyed or angry easily."
+          },
+          {
+            num: 5,
+            before: "Thomas is very ",
+            after: " . He won't let you down.",
+            answers: ["reliable"],
+            displayAnswer: "reliable",
+            explanation: "A 'reliable' person can be trusted to do what they promise ('won't let you down')."
+          },
+          {
+            num: 6,
+            before: "Don't believe everything Helen says. She's a bit ",
+            after: " .",
+            answers: ["insincere"],
+            displayAnswer: "insincere",
+            explanation: "'Insincere' means not expressing genuine feelings or not telling the truth."
+          },
+          {
+            num: 7,
+            before: "A ",
+            after: " person doesn't care about other people's feelings.",
+            answers: ["selfish"],
+            displayAnswer: "selfish",
+            explanation: "'Selfish' people care only about themselves and not about others."
+          },
+          {
+            num: 8,
+            before: "Jane is very ",
+            after: " and blushes when strangers talk to her.",
+            answers: ["shy"],
+            displayAnswer: "shy",
+            explanation: "'Shy' people feel nervous and uncomfortable around strangers."
+          },
+          {
+            num: 9,
+            before: "Henry didn't answer, he just ",
+            after: " his shoulders instead.",
+            answers: ["shrugged"],
+            displayAnswer: "shrugged",
+            explanation: "To 'shrug one's shoulders' is to raise and lower your shoulders to show you don't know or don't care."
+          },
+          {
+            num: 10,
+            before: "Listen to me! Don't be so ",
+            after: " .",
+            answers: ["stubborn"],
+            displayAnswer: "stubborn",
+            explanation: "'Stubborn' people refuse to listen to others or change their mind."
+          }
+        ]
+      },
+
+      ex2: {
+        pointsEach: 4,
+        items: [
+          {
+            num: 1,
+            before: "John always looks on the bright side of life. He's very ",
+            after: " . ",
+            boldWord: "OPTIMISM",
+            answers: ["optimistic"],
+            displayAnswer: "optimistic",
+            explanation: "OPTIMISM (noun) → optimistic (adjective: suffix -ic)."
+          },
+          {
+            num: 2,
+            before: "That woman across the street is very ",
+            after: " . ",
+            boldWord: "ATTRACT",
+            answers: ["attractive"],
+            displayAnswer: "attractive",
+            explanation: "ATTRACT (verb) → attractive (adjective: suffix -ive)."
+          },
+          {
+            num: 3,
+            before: "Dave bought me a wonderful birthday present. He's so ",
+            after: " . ",
+            boldWord: "GENEROSITY",
+            answers: ["generous"],
+            displayAnswer: "generous",
+            explanation: "GENEROSITY (noun) → generous (adjective: suffix -ous)."
+          },
+          {
+            num: 4,
+            before: "I became ",
+            after: " when he turned up late again. ",
+            boldWord: "FURY",
+            answers: ["furious"],
+            displayAnswer: "furious",
+            explanation: "FURY (noun) → furious (adjective: change -y to -i and add -ous)."
+          },
+          {
+            num: 5,
+            before: "The film was quite ",
+            after: " . ",
+            boldWord: "BORE",
+            answers: ["boring"],
+            displayAnswer: "boring",
+            explanation: "BORE (verb/noun) → boring (present participle adjective describing what the film was like)."
+          }
+        ]
+      },
+
+      ex3: {
+        pointsEach: 2,
+        items: [
+          {
+            num: 1,
+            before: "I ",
+            prompt: "(take)",
+            after: " the dog for a walk every day after school.",
+            answers: ["take"],
+            displayAnswer: "take",
+            explanation: "Present Simple ('take') is used for daily routines and habits ('every day after school')."
+          },
+          {
+            num: 2,
+            before: "Jade ",
+            prompt: "(look)",
+            after: " for a new job at the moment.",
+            answers: ["is looking", "'s looking"],
+            displayAnswer: "is looking",
+            explanation: "Present Continuous ('is looking') is used for temporary actions happening around now ('at the moment')."
+          },
+          {
+            num: 3,
+            before: "This cake ",
+            prompt: "(taste)",
+            after: " delicious.",
+            answers: ["tastes"],
+            displayAnswer: "tastes",
+            explanation: "Present Simple ('tastes') is used because 'taste' here is a stative verb meaning 'has a delicious flavour'."
+          },
+          {
+            num: 4,
+            before: "Tie your shoelaces. You ",
+            prompt: "(trip)",
+            after: " over them.",
+            answers: ["are going to trip", "'re going to trip", "will trip", "'ll trip"],
+            displayAnswer: "are going to trip",
+            explanation: "'Be going to' ('are going to trip') is used for predictions based on visible present evidence (untied shoelaces)."
+          },
+          {
+            num: 5,
+            before: "George ",
+            prompt: "(cook)",
+            after: " a meal when the phone rang.",
+            answers: ["was cooking"],
+            displayAnswer: "was cooking",
+            explanation: "Past Continuous ('was cooking') describes a longer action in progress in the past interrupted by a shorter past action ('when the phone rang')."
+          },
+          {
+            num: 6,
+            before: "Olly always ",
+            prompt: "(dress)",
+            after: " in black when he was a teenager.",
+            answers: ["dressed"],
+            displayAnswer: "dressed",
+            explanation: "Past Simple ('dressed') is used for past habits and states that are now finished ('when he was a teenager')."
+          },
+          {
+            num: 7,
+            before: "I'm really tired. I think I ",
+            prompt: "(have)",
+            after: " an early night.",
+            answers: ["will have", "'ll have"],
+            displayAnswer: "will have",
+            explanation: "Future Simple ('will have' / ''ll have') is used for on-the-spot decisions and after 'I think'."
+          },
+          {
+            num: 8,
+            before: "Fred ",
+            prompt: "(work)",
+            after: " for the company for ten years.",
+            answers: ["has been working", "'s been working", "has worked", "'s worked"],
+            displayAnswer: "has been working / has worked",
+            explanation: "Present Perfect Continuous ('has been working') or Present Perfect Simple ('has worked') expresses an action that started in the past and continues up to now ('for ten years')."
+          },
+          {
+            num: 9,
+            before: "I can't stand Mrs Brown. She ",
+            prompt: "(always/shout)",
+            after: " at us.",
+            answers: ["is always shouting", "'s always shouting"],
+            displayAnswer: "is always shouting",
+            explanation: "Present Continuous with 'always' ('is always shouting') expresses annoyance or irritation at a repeated habit."
+          },
+          {
+            num: 10,
+            before: "Trevor ",
+            prompt: "(think)",
+            after: " about buying a new car.",
+            answers: ["is thinking", "'s thinking"],
+            displayAnswer: "is thinking",
+            explanation: "Present Continuous ('is thinking') is used when 'think' means 'consider' (active mental process)."
+          }
+        ]
+      },
+
+      ex4: {
+        pointsEach: 2,
+        items: [
+          {
+            num: 1,
+            before: "Do you get ",
+            after: " well with your classmates?",
+            answers: ["along", "on"],
+            displayAnswer: "along",
+            explanation: "'Get along (with)' / 'get on (with)' means to have a friendly relationship with someone."
+          },
+          {
+            num: 2,
+            before: "The bad weather is really beginning to get me ",
+            after: " .",
+            answers: ["down"],
+            displayAnswer: "down",
+            explanation: "'Get someone down' means to make someone feel sad or depressed."
+          },
+          {
+            num: 3,
+            before: "The teacher had difficulty getting her ideas ",
+            after: " to the students.",
+            answers: ["across"],
+            displayAnswer: "across",
+            explanation: "'Get across' means to successfully communicate or make people understand an idea."
+          },
+          {
+            num: 4,
+            before: "It has taken me a long time to get ",
+            after: " the flu.",
+            answers: ["over"],
+            displayAnswer: "over",
+            explanation: "'Get over' means to recover from an illness or a difficult experience."
+          },
+          {
+            num: 5,
+            before: "Come on! The sooner we start, the sooner we will get it ",
+            after: " .",
+            answers: ["over with"],
+            displayAnswer: "over with",
+            explanation: "'Get something over with' means to finish something unpleasant or difficult that must be done."
+          }
+        ]
+      },
+
+      ex5: {
+        pointsEach: 2,
+        items: [
+          {
+            num: 1,
+            before: "Mr Brown is very popular ",
+            after: " the students.",
+            answers: ["with"],
+            displayAnswer: "with",
+            explanation: "Dependent preposition: 'popular with' someone."
+          },
+          {
+            num: 2,
+            before: "I am very good ",
+            after: " English. I am always top of the class.",
+            answers: ["at"],
+            displayAnswer: "at",
+            explanation: "Dependent preposition: 'good at' a subject or skill."
+          },
+          {
+            num: 3,
+            before: "I'm not very keen ",
+            after: " basketball. I prefer football.",
+            answers: ["on"],
+            displayAnswer: "on",
+            explanation: "Dependent preposition: 'keen on' something (interested in / fond of)."
+          },
+          {
+            num: 4,
+            before: "Polly is very fond ",
+            after: " her grandmother.",
+            answers: ["of"],
+            displayAnswer: "of",
+            explanation: "Dependent preposition: 'fond of' someone or something."
+          },
+          {
+            num: 5,
+            before: "You shouldn't be jealous ",
+            after: " your little sister.",
+            answers: ["of"],
+            displayAnswer: "of",
+            explanation: "Dependent preposition: 'jealous of' someone."
+          }
+        ]
+      },
+
+      ex6: {
+        pointsEach: 4,
+        leftItems: [
+          {
+            num: 1,
+            text: "Thank you very much.",
+            answer: "c",
+            explanation: "'Don't mention it.' is a polite reply to 'Thank you very much.'"
+          },
+          {
+            num: 2,
+            text: "Is this seat taken?",
+            answer: "a",
+            explanation: "'No, please sit down.' answers whether the seat is occupied."
+          },
+          {
+            num: 3,
+            text: "I'm afraid I have to go.",
+            answer: "e",
+            explanation: "'Well, thank you for coming.' is what a host says when a guest leaves."
+          },
+          {
+            num: 4,
+            text: "Make yourself at home.",
+            answer: "b",
+            explanation: "'That's very kind of you.' politely thanks a host for welcoming you."
+          },
+          {
+            num: 5,
+            text: "What a nice day!",
+            answer: "d",
+            explanation: "'Indeed it is.' agrees with the exclamation 'What a nice day!'"
+          }
+        ],
+        rightItems: [
+          { letter: "a", text: "No, please sit down." },
+          { letter: "b", text: "That's very kind of you." },
+          { letter: "c", text: "Don't mention it." },
+          { letter: "d", text: "Indeed it is." },
+          { letter: "e", text: "Well, thank you for coming." }
+        ]
+      }
+    };
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
+    let activeEx1Input = null;
+    let activeEx6SourceNum = null;
+    let explanationsVisible = false;
+
+    function createBlankInput(exNum, qNum, widthClass = "") {
+      const wrap = document.createElement("span");
+      wrap.className = "blank-wrap";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = `blank-input ${widthClass}`.trim();
+      input.dataset.ex = exNum;
+      input.dataset.num = qNum;
+      input.id = `input-ex${exNum}-${qNum}`;
+      input.autocomplete = "off";
+      input.spellcheck = false;
+      input.setAttribute("aria-label", `Exercise ${exNum} Question ${qNum}`);
+
+      const icon = document.createElement("span");
+      icon.className = "status-icon";
+      icon.id = `icon-ex${exNum}-${qNum}`;
+
+      const badge = document.createElement("span");
+      badge.className = "correction-badge";
+      badge.id = `badge-ex${exNum}-${qNum}`;
+
+      wrap.appendChild(input);
+      wrap.appendChild(icon);
+      wrap.appendChild(badge);
+      return { wrap, input };
+    }
+
+    function renderExercise1() {
+      const list = document.getElementById("ex1-list");
+      WORKSHEET_DATA.ex1.items.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "question-item";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "q-num";
+        numSpan.textContent = item.num;
+
+        const bodyDiv = document.createElement("div");
+        bodyDiv.className = "q-body";
+
+        const { wrap, input } = createBlankInput(1, item.num);
+        input.addEventListener("focus", () => {
+          document.querySelectorAll("#ex1-list .blank-input").forEach((el) => el.classList.remove("active-target"));
+          input.classList.add("active-target");
+          activeEx1Input = input;
+        });
+        input.addEventListener("input", () => {
+          clearInputValidation(1, item.num);
+          updateWordBankState();
+          updateProgressCount();
+        });
+
+        bodyDiv.appendChild(document.createTextNode(item.before));
+        bodyDiv.appendChild(wrap);
+        bodyDiv.appendChild(document.createTextNode(item.after));
+
+        const exp = document.createElement("div");
+        exp.className = "explanation-box";
+        exp.id = `exp-ex1-${item.num}`;
+        exp.textContent = item.explanation;
+        bodyDiv.appendChild(exp);
+
+        li.appendChild(numSpan);
+        li.appendChild(bodyDiv);
+        list.appendChild(li);
+      });
+
+      // Word bank click handlers
+      document.querySelectorAll("#ex1-word-bank .word-chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const word = chip.dataset.word;
+          let target = activeEx1Input;
+          if (!target || target.value.trim() !== "") {
+            // Find first empty blank in Ex 1
+            const allEx1Inputs = Array.from(document.querySelectorAll("#ex1-list .blank-input"));
+            target = allEx1Inputs.find((inp) => inp.value.trim() === "") || activeEx1Input || allEx1Inputs[0];
+          }
+          if (target) {
+            const qNum = Number(target.dataset.num);
+            // Capitalize if question 3 (starts sentence)
+            target.value = qNum === 3 ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+            clearInputValidation(1, qNum);
+            updateWordBankState();
+            updateProgressCount();
+            // Advance focus to next empty blank
+            const allEx1Inputs = Array.from(document.querySelectorAll("#ex1-list .blank-input"));
+            const nextEmpty = allEx1Inputs.find((inp) => inp.value.trim() === "");
+            if (nextEmpty) {
+              nextEmpty.focus();
+            }
+          }
+        });
+      });
+    }
+
+    function updateWordBankState() {
+      const usedWords = new Set(
+        Array.from(document.querySelectorAll("#ex1-list .blank-input"))
+          .map((inp) => inp.value.trim().toLowerCase())
+          .filter(Boolean)
+      );
+      document.querySelectorAll("#ex1-word-bank .word-chip").forEach((chip) => {
+        if (usedWords.has(chip.dataset.word.toLowerCase())) {
+          chip.classList.add("used");
+        } else {
+          chip.classList.remove("used");
+        }
+      });
+    }
+
+    function renderExercise2() {
+      const list = document.getElementById("ex2-list");
+      WORKSHEET_DATA.ex2.items.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "question-item";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "q-num";
+        numSpan.textContent = item.num;
+
+        const bodyDiv = document.createElement("div");
+        bodyDiv.className = "q-body";
+
+        const { wrap, input } = createBlankInput(2, item.num);
+        input.addEventListener("input", () => {
+          clearInputValidation(2, item.num);
+          updateProgressCount();
+        });
+
+        const boldSpan = document.createElement("span");
+        boldSpan.className = "bold-prompt";
+        boldSpan.textContent = item.boldWord;
+
+        bodyDiv.appendChild(document.createTextNode(item.before));
+        bodyDiv.appendChild(wrap);
+        bodyDiv.appendChild(document.createTextNode(item.after));
+        bodyDiv.appendChild(boldSpan);
+
+        const exp = document.createElement("div");
+        exp.className = "explanation-box";
+        exp.id = `exp-ex2-${item.num}`;
+        exp.textContent = item.explanation;
+        bodyDiv.appendChild(exp);
+
+        li.appendChild(numSpan);
+        li.appendChild(bodyDiv);
+        list.appendChild(li);
+      });
+    }
+
+    function renderExercise3() {
+      const list = document.getElementById("ex3-list");
+      WORKSHEET_DATA.ex3.items.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "question-item";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "q-num";
+        numSpan.textContent = item.num;
+
+        const bodyDiv = document.createElement("div");
+        bodyDiv.className = "q-body";
+
+        const { wrap, input } = createBlankInput(3, item.num, "wide");
+        input.addEventListener("input", () => {
+          clearInputValidation(3, item.num);
+          updateProgressCount();
+        });
+
+        const promptSpan = document.createElement("span");
+        promptSpan.className = "verb-prompt";
+        promptSpan.textContent = ` ${item.prompt}`;
+
+        bodyDiv.appendChild(document.createTextNode(item.before));
+        bodyDiv.appendChild(wrap);
+        bodyDiv.appendChild(promptSpan);
+        bodyDiv.appendChild(document.createTextNode(item.after));
+
+        const exp = document.createElement("div");
+        exp.className = "explanation-box";
+        exp.id = `exp-ex3-${item.num}`;
+        exp.textContent = item.explanation;
+        bodyDiv.appendChild(exp);
+
+        li.appendChild(numSpan);
+        li.appendChild(bodyDiv);
+        list.appendChild(li);
+      });
+    }
+
+    function renderExercise4() {
+      const list = document.getElementById("ex4-list");
+      WORKSHEET_DATA.ex4.items.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "question-item";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "q-num";
+        numSpan.textContent = item.num;
+
+        const bodyDiv = document.createElement("div");
+        bodyDiv.className = "q-body";
+
+        const { wrap, input } = createBlankInput(4, item.num, "short");
+        input.addEventListener("input", () => {
+          clearInputValidation(4, item.num);
+          updateProgressCount();
+        });
+
+        bodyDiv.appendChild(document.createTextNode(item.before));
+        bodyDiv.appendChild(wrap);
+        bodyDiv.appendChild(document.createTextNode(item.after));
+
+        const exp = document.createElement("div");
+        exp.className = "explanation-box";
+        exp.id = `exp-ex4-${item.num}`;
+        exp.textContent = item.explanation;
+        bodyDiv.appendChild(exp);
+
+        li.appendChild(numSpan);
+        li.appendChild(bodyDiv);
+        list.appendChild(li);
+      });
+    }
+
+    function renderExercise5() {
+      const list = document.getElementById("ex5-list");
+      WORKSHEET_DATA.ex5.items.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "question-item";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "q-num";
+        numSpan.textContent = item.num;
+
+        const bodyDiv = document.createElement("div");
+        bodyDiv.className = "q-body";
+
+        const { wrap, input } = createBlankInput(5, item.num, "short");
+        input.addEventListener("input", () => {
+          clearInputValidation(5, item.num);
+          updateProgressCount();
+        });
+
+        bodyDiv.appendChild(document.createTextNode(item.before));
+        bodyDiv.appendChild(wrap);
+        bodyDiv.appendChild(document.createTextNode(item.after));
+
+        const exp = document.createElement("div");
+        exp.className = "explanation-box";
+        exp.id = `exp-ex5-${item.num}`;
+        exp.textContent = item.explanation;
+        bodyDiv.appendChild(exp);
+
+        li.appendChild(numSpan);
+        li.appendChild(bodyDiv);
+        list.appendChild(li);
+      });
+    }
+
+    function renderExercise6() {
+      const leftList = document.getElementById("ex6-left-list");
+      const rightList = document.getElementById("ex6-right-list");
+
+      WORKSHEET_DATA.ex6.leftItems.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "match-left-item";
+        li.id = `ex6-left-row-${item.num}`;
+
+        const boxGroup = document.createElement("div");
+        boxGroup.className = "match-box-group";
+
+        const numCell = document.createElement("div");
+        numCell.className = "match-num-cell";
+        numCell.textContent = item.num;
+        numCell.title = "Click to select, then click a response on the right";
+
+        const select = document.createElement("select");
+        select.className = "match-select";
+        select.id = `input-ex6-${item.num}`;
+        select.dataset.ex = "6";
+        select.dataset.num = item.num;
+        select.setAttribute("aria-label", `Match for item ${item.num}`);
+
+        const emptyOpt = document.createElement("option");
+        emptyOpt.value = "";
+        emptyOpt.textContent = "";
+        select.appendChild(emptyOpt);
+
+        ["a", "b", "c", "d", "e"].forEach((letter) => {
+          const opt = document.createElement("option");
+          opt.value = letter;
+          opt.textContent = letter;
+          select.appendChild(opt);
+        });
+
+        select.addEventListener("change", () => {
+          clearInputValidation(6, item.num);
+          updateEx6Highlights();
+          updateProgressCount();
+        });
+
+        boxGroup.appendChild(numCell);
+        boxGroup.appendChild(select);
+
+        const textWrap = document.createElement("div");
+        textWrap.style.flex = "1";
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = item.text;
+        textSpan.style.cursor = "pointer";
+
+        const icon = document.createElement("span");
+        icon.className = "status-icon";
+        icon.id = `icon-ex6-${item.num}`;
+
+        const badge = document.createElement("span");
+        badge.className = "correction-badge";
+        badge.id = `badge-ex6-${item.num}`;
+
+        const exp = document.createElement("div");
+        exp.className = "explanation-box";
+        exp.id = `exp-ex6-${item.num}`;
+        exp.textContent = item.explanation;
+
+        textWrap.appendChild(textSpan);
+        textWrap.appendChild(icon);
+        textWrap.appendChild(badge);
+        textWrap.appendChild(exp);
+
+        const selectSourceHandler = () => {
+          document.querySelectorAll(".match-left-item").forEach((el) => el.classList.remove("selected-source"));
+          if (activeEx6SourceNum === item.num) {
+            activeEx6SourceNum = null;
+          } else {
+            activeEx6SourceNum = item.num;
+            li.classList.add("selected-source");
+          }
+        };
+
+        numCell.addEventListener("click", selectSourceHandler);
+        textSpan.addEventListener("click", selectSourceHandler);
+
+        li.appendChild(boxGroup);
+        li.appendChild(textWrap);
+        leftList.appendChild(li);
+      });
+
+      WORKSHEET_DATA.ex6.rightItems.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "match-right-item";
+        li.dataset.letter = item.letter;
+
+        const letterSpan = document.createElement("span");
+        letterSpan.className = "match-letter";
+        letterSpan.textContent = item.letter;
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = item.text;
+
+        li.appendChild(letterSpan);
+        li.appendChild(textSpan);
+
+        li.addEventListener("click", () => {
+          let targetNum = activeEx6SourceNum;
+          if (!targetNum) {
+            // Find first unassigned dropdown
+            const firstEmpty = WORKSHEET_DATA.ex6.leftItems.find(
+              (l) => !document.getElementById(`input-ex6-${l.num}`).value
+            );
+            if (firstEmpty) targetNum = firstEmpty.num;
+          }
+          if (targetNum) {
+            const sel = document.getElementById(`input-ex6-${targetNum}`);
+            sel.value = item.letter;
+            clearInputValidation(6, targetNum);
+            document.querySelectorAll(".match-left-item").forEach((el) => el.classList.remove("selected-source"));
+            activeEx6SourceNum = null;
+            updateEx6Highlights();
+            updateProgressCount();
+          }
+        });
+
+        rightList.appendChild(li);
+      });
+    }
+
+    function updateEx6Highlights() {
+      const chosenLetters = new Set(
+        WORKSHEET_DATA.ex6.leftItems
+          .map((item) => document.getElementById(`input-ex6-${item.num}`).value)
+          .filter(Boolean)
+      );
+      document.querySelectorAll("#ex6-right-list .match-right-item").forEach((li) => {
+        if (chosenLetters.has(li.dataset.letter)) {
+          li.classList.add("used-target");
+        } else {
+          li.classList.remove("used-target");
+        }
+      });
+    }
+
+    // =========================================================================
+    // VALIDATION & GRADING LOGIC
+    // =========================================================================
+    function normalizeText(str) {
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[\u2018\u2019`]/g, "'")
+        .replace(/\s+/g, " ");
+    }
+
+    function clearInputValidation(exNum, qNum) {
+      const input = document.getElementById(`input-ex${exNum}-${qNum}`);
+      const icon = document.getElementById(`icon-ex${exNum}-${qNum}`);
+      const badge = document.getElementById(`badge-ex${exNum}-${qNum}`);
+      if (input) input.classList.remove("correct", "wrong");
+      if (icon) {
+        icon.className = "status-icon";
+        icon.textContent = "";
+      }
+      if (badge) {
+        badge.className = "correction-badge";
+        badge.textContent = "";
+      }
+    }
+
+    function checkExercise(exNum) {
+      let earnedPoints = 0;
+
+      if (exNum >= 1 && exNum <= 5) {
+        const exData = WORKSHEET_DATA[`ex${exNum}`];
+        exData.items.forEach((item) => {
+          const input = document.getElementById(`input-ex${exNum}-${item.num}`);
+          const icon = document.getElementById(`icon-ex${exNum}-${item.num}`);
+          const badge = document.getElementById(`badge-ex${exNum}-${item.num}`);
+          const userVal = normalizeText(input.value);
+
+          const isCorrect = item.answers.some((ans) => normalizeText(ans) === userVal);
+
+          input.classList.remove("correct", "wrong");
+          if (isCorrect) {
+            earnedPoints += exData.pointsEach;
+            input.classList.add("correct");
+            icon.className = "status-icon correct";
+            icon.textContent = "✓";
+            badge.className = "correction-badge";
+            badge.textContent = "";
+          } else {
+            input.classList.add("wrong");
+            icon.className = "status-icon wrong";
+            icon.textContent = "✗";
+            badge.className = "correction-badge visible";
+            badge.textContent = `→ ${item.displayAnswer}`;
+          }
+        });
+      } else if (exNum === 6) {
+        const exData = WORKSHEET_DATA.ex6;
+        exData.leftItems.forEach((item) => {
+          const select = document.getElementById(`input-ex6-${item.num}`);
+          const icon = document.getElementById(`icon-ex6-${item.num}`);
+          const badge = document.getElementById(`badge-ex6-${item.num}`);
+          const userVal = normalizeText(select.value);
+
+          select.classList.remove("correct", "wrong");
+          if (userVal === item.answer) {
+            earnedPoints += exData.pointsEach;
+            select.classList.add("correct");
+            icon.className = "status-icon correct";
+            icon.textContent = "✓";
+            badge.className = "correction-badge";
+            badge.textContent = "";
+          } else {
+            select.classList.add("wrong");
+            icon.className = "status-icon wrong";
+            icon.textContent = "✗";
+            badge.className = "correction-badge visible";
+            badge.textContent = `→ ${item.answer}`;
+          }
+        });
+      }
+
+      const scoreCell = document.getElementById(`score-ex-${exNum}`);
+      if (scoreCell) {
+        scoreCell.textContent = earnedPoints;
+      }
+
+      updateTotalScoreDisplay();
+      return earnedPoints;
+    }
+
+    function updateTotalScoreDisplay() {
+      let total = 0;
+      let anyChecked = false;
+      for (let i = 1; i <= 6; i++) {
+        const cell = document.getElementById(`score-ex-${i}`);
+        if (cell && cell.textContent !== "") {
+          total += Number(cell.textContent);
+          anyChecked = true;
+        }
+      }
+      if (anyChecked) {
+        document.getElementById("score-total").textContent = total;
+        const pill = document.getElementById("live-score-pill");
+        pill.classList.add("visible");
+        document.getElementById("top-total-score").textContent = `${total} / 100`;
+      }
+    }
+
+    function checkAllExercises() {
+      for (let i = 1; i <= 6; i++) {
+        checkExercise(i);
+      }
+    }
+
+    function toggleExplanations(forceState) {
+      explanationsVisible = typeof forceState === "boolean" ? forceState : !explanationsVisible;
+      document.querySelectorAll(".explanation-box").forEach((box) => {
+        box.classList.toggle("visible", explanationsVisible);
+      });
+      const btn = document.getElementById("btn-toggle-explanations");
+      btn.textContent = explanationsVisible ? "💡 Hide Explanations" : "💡 Explanations";
+    }
+
+    function showAllAnswers() {
+      for (let exNum = 1; exNum <= 5; exNum++) {
+        const exData = WORKSHEET_DATA[`ex${exNum}`];
+        exData.items.forEach((item) => {
+          const input = document.getElementById(`input-ex${exNum}-${item.num}`);
+          input.value = item.answers[0];
+          if (exNum === 1 && item.num === 3) {
+            input.value = "Pessimistic";
+          }
+        });
+      }
+      WORKSHEET_DATA.ex6.leftItems.forEach((item) => {
+        const select = document.getElementById(`input-ex6-${item.num}`);
+        select.value = item.answer;
+      });
+      updateWordBankState();
+      updateEx6Highlights();
+      updateProgressCount();
+      checkAllExercises();
+      toggleExplanations(true);
+    }
+
+    function resetAll() {
+      document.querySelectorAll(".blank-input").forEach((inp) => {
+        inp.value = "";
+        inp.classList.remove("correct", "wrong", "active-target");
+      });
+      document.querySelectorAll(".match-select").forEach((sel) => {
+        sel.value = "";
+        sel.classList.remove("correct", "wrong");
+      });
+      document.querySelectorAll(".status-icon").forEach((icon) => {
+        icon.className = "status-icon";
+        icon.textContent = "";
+      });
+      document.querySelectorAll(".correction-badge").forEach((badge) => {
+        badge.className = "correction-badge";
+        badge.textContent = "";
+      });
+      for (let i = 1; i <= 6; i++) {
+        document.getElementById(`score-ex-${i}`).textContent = "";
+      }
+      document.getElementById("score-total").textContent = "";
+      document.getElementById("live-score-pill").classList.remove("visible");
+
+      toggleExplanations(false);
+      updateWordBankState();
+      updateEx6Highlights();
+      updateProgressCount();
+    }
+
+    function updateProgressCount() {
+      const inputs = Array.from(document.querySelectorAll(".blank-input, .match-select"));
+      const filled = inputs.filter((el) => el.value.trim() !== "").length;
+      const total = inputs.length; // 35
+      document.getElementById("completed-count").textContent = filled;
+      const pct = Math.round((filled / total) * 100);
+      document.getElementById("progress-bar-fill").style.width = `${pct}%`;
+    }
+
+    // =========================================================================
+    // INITIALIZE PAGE
+    // =========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      renderExercise1();
+      renderExercise2();
+      renderExercise3();
+      renderExercise4();
+      renderExercise5();
+      renderExercise6();
+
+      // Section check buttons
+      document.querySelectorAll("[data-check-ex]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const exNum = Number(btn.dataset.checkEx);
+          checkExercise(exNum);
+        });
+      });
+
+      // Global control bar buttons
+      document.getElementById("btn-check-all").addEventListener("click", checkAllExercises);
+      document.getElementById("btn-toggle-explanations").addEventListener("click", () => toggleExplanations());
+      document.getElementById("btn-show-answers").addEventListener("click", showAllAnswers);
+      document.getElementById("btn-reset-all").addEventListener("click", resetAll);
+
+      // "Now I Can" checkbox styling
+      document.querySelectorAll(".can-checkbox").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          cb.closest(".can-item").classList.toggle("checked", cb.checked);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
